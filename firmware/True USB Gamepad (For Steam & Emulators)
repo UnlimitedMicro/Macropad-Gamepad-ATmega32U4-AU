@@ -1,0 +1,65 @@
+/*
+ * MicroPad V1 - Profile 2: Direct USB Gamepad Controller
+ * Target Board: Arduino Leonardo or Arduino Micro
+ * Required Library: "Joystick" by Matthew Heironimus
+ */
+
+#include <Joystick.h>
+
+// Create standard 5-button, 2-axis gamepad instance
+Joystick_ Gamepad(
+  JOYSTICK_DEFAULT_REPORT_ID, 
+  JOYSTICK_TYPE_GAMEPAD,
+  5,               // 5 Buttons: Joy click + 4 Tactile Buttons
+  0,               // 0 Hat switches
+  true, true,      // X and Y Axis enabled
+  false, false,    // Z Axis, Rx disabled
+  false, false,    // Ry, Rz disabled
+  false, false,    // Rudder, Throttle disabled
+  false, false,    // Accelerator, Brake disabled
+  false            // Steering disabled
+);
+
+// --- Pin Definitions ---
+const int PIN_JOY_X  = A0;
+const int PIN_JOY_Y  = A1;
+const int PIN_JOY_SW = 7;
+const int PIN_BTN1   = 0;
+const int PIN_BTN2   = 1;
+const int PIN_BTN3   = 2;
+const int PIN_BTN4   = 3;
+const int PIN_LED    = 8;
+
+void setup() {
+  pinMode(PIN_JOY_SW, INPUT_PULLUP);
+  pinMode(PIN_BTN1,   INPUT_PULLUP);
+  pinMode(PIN_BTN2,   INPUT_PULLUP);
+  pinMode(PIN_BTN3,   INPUT_PULLUP);
+  pinMode(PIN_BTN4,   INPUT_PULLUP);
+
+  pinMode(PIN_LED, OUTPUT);
+  digitalWrite(PIN_LED, HIGH);
+
+  // Initialize gamepad with 10-bit analog stick range (0 - 1023)
+  Gamepad.begin();
+  Gamepad.setXAxisRange(0, 1023);
+  Gamepad.setYAxisRange(0, 1023);
+}
+
+void loop() {
+  // Read analog stick axes
+  int xVal = analogRead(PIN_JOY_X);
+  int yVal = analogRead(PIN_JOY_Y);
+
+  Gamepad.setXAxis(xVal);
+  Gamepad.setYAxis(yVal);
+
+  // Map Buttons (Active LOW -> 1 = Pressed, 0 = Released)
+  Gamepad.setButton(0, !digitalRead(PIN_JOY_SW)); // Button 0: Thumbstick Click
+  Gamepad.setButton(1, !digitalRead(PIN_BTN1));   // Button 1: SW1
+  Gamepad.setButton(2, !digitalRead(PIN_BTN2));   // Button 2: SW2
+  Gamepad.setButton(3, !digitalRead(PIN_BTN3));   // Button 3: SW3
+  Gamepad.setButton(4, !digitalRead(PIN_BTN4));   // Button 4: SW4
+
+  delay(5); // Ultra-low latency ~200Hz polling rate
+}
