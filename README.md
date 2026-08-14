@@ -1,21 +1,21 @@
-# MicroPad - Dual Rotary & Analog USB Controller
+# MicroPad - Universal Dual-Encoder USB HID Controller
 
-MicroPad is an open-source, programmable USB HID macro pad and custom input deck powered by the **ATmega32U4**. It provides native plug-and-play USB input across Windows, macOS, and Linux without needing any third-party drivers.
-
----
-
-## Key Hardware Features
-
-* **Dual EC11 Rotary Encoders:** Dedicated hardware dials for volume control, timeline scrubbing, zoom, or brush sizing with integrated push-click switches.
-* **Analog Thumbstick:** Smooth 2-axis analog control with push-button click for mouse emulation or direct gamepad mapping.
-* **4 Mechanical Key Switch Footprints (SW1–SW4):** Standard MX-compatible switch slots for ultra-responsive hotkeys and macros.
-* **Integrated Slide Potentiometer (RV1):** Smooth linear fader for dynamic canvas zooming, timeline navigation, or audio volume.
-* **Hardware Mode Switcher (SW8):** 3-position SP3T slider switch on the PCB to instantly toggle between **Game Mode**, **Mac Mode**, and **Windows Mode** on the fly.
-* **Hardware Protection:** Full USB-C interface with ESD suppression (USBLC6-2SC6) and a 500mA PTC resettable fuse.
+MicroPad is an open-source, fully programmable macro pad and USB input controller powered by the **ATmega32U4**. It provides driverless, plug-and-play USB HID operation across Windows, macOS, and Linux.
 
 ---
 
-## Hardware Mode Switcher Functions
+## Features
+
+* **Dual EC11 Rotary Encoders (`SW6`, `SW7`):** Hardware volume control and timeline scrub/scroll with integrated push-to-click buttons.
+* **Analog Thumbstick (`U1`):** Smooth 2-axis mouse cursor navigation and left-click switch.
+* **Integrated Slide Potentiometer (`RV1`):** Linear fader for zooming, canvas scaling, or brush resizing.
+* **4 MX-Compatible Mechanical Switch Sockets (`SW1`–`SW4`):** Dedicated hotkey pads.
+* **Hardware Profile Switcher (`SW8`):** 3-position SP3T slider switch on the PCB to switch profiles in real-time.
+* **USB-C Interface:** Full ESD protection via USBLC6-2SC6 and a 500mA PTC resettable fuse.
+
+---
+
+## Hardware Mode Profiles (`SW8`)
 
 | Switch Position | Active Mode | SW1 | SW2 | SW3 | SW4 |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -25,22 +25,33 @@ MicroPad is an open-source, programmable USB HID macro pad and custom input deck
 
 ---
 
-## Quick Setup & Flashing
+## Flashing & Setup Guide
 
-1. **Install Arduino IDE:** Download from [arduino.cc](https://www.arduino.cc/en/software).
-2. **Install Required Libraries:**
-   * Go to **Sketch $\rightarrow$ Include Library $\rightarrow$ Manage Libraries...**
-   * Search for and install **`HID-Project`** by *NicoHood*.
-   * Search for and install **`Encoder`** by *Paul Stoffregen*.
-3. **Upload Firmware:**
-   * Open `firmware/v2_controller/v2_controller.ino`.
-   * Under **Tools $\rightarrow$ Board**, select **Arduino Leonardo** (or **Arduino Micro**).
-   * Select your board's COM port under **Tools $\rightarrow$ Port**.
-   * Click **Upload**.
+### 1. Burn the Bootloader (First Time Only)
+Factory ATmega32U4 chips are blank and must have the bootloader flashed via the 6-pin ISP header (`J2`):
+
+1. Connect an **Arduino Uno** running the `ArduinoISP` example sketch.
+2. Insert a **100Ω resistor between 5V and RESET** on the Uno to prevent auto-reset.
+3. Wire the Uno to the MicroPad ISP header:
+   * Uno `Pin 11` $\rightarrow$ `MOSI`
+   * Uno `Pin 12` $\rightarrow$ `MISO`
+   * Uno `Pin 13` $\rightarrow$ `SCK`
+   * Uno `Pin 10` $\rightarrow$ `RST`
+   * Uno `5V`     $\rightarrow$ `5V`
+   * Uno `GND`    $\rightarrow$ `GND`
+4. In the Arduino IDE:
+   * **Tools $\rightarrow$ Board $\rightarrow$ Arduino AVR Boards $\rightarrow$ Arduino Leonardo**
+   * **Tools $\rightarrow$ Programmer $\rightarrow$ "Arduino as ISP"**
+   * Select **Tools $\rightarrow$ Burn Bootloader**.
 
 ---
 
-## Repository Structure
+### 2. Upload Firmware (USB-C)
+Once the bootloader is burned, disconnect the ISP programmer and plug the board in directly via USB-C:
 
-* `/hardware`: Schematic PDF and full hardware pinout documentation.
-* `/firmware`: Complete Arduino HID source code.
+1. Install required libraries in the Arduino Library Manager:
+   * `HID-Project` by NicoHood
+   * `Encoder` by Paul Stoffregen
+2. Open `firmware/v2_controller/v2_controller.ino`.
+3. Select **Tools $\rightarrow$ Board $\rightarrow$ Arduino Leonardo** and select your COM port.
+4. Click **Upload**.
