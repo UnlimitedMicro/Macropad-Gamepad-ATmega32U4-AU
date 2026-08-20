@@ -1,4 +1,7 @@
 # MicroPad - Universal Dual-Encoder USB HID Controller
+# Copyright (C) 2026 Your Name / MicroPad Project
+# This firmware is licensed under CC BY-NC-SA 4.0.
+# Commercial use, reproduction, or sales are strictly prohibited.
 
 MicroPad is an open-source, fully programmable macro pad and USB input controller powered by the **ATmega32U4**. It provides driverless, plug-and-play USB HID operation across Windows, macOS, and Linux.
 
