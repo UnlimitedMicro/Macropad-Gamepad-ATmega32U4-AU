@@ -1,5 +1,7 @@
 # MicroPad - Hardware Pinout & Circuit Map
-
+# Copyright (C) 2026 UnlimitedMicro/ MicroPad Project
+# This firmware is licensed under CC BY-NC-SA 4.0.
+# Commercial use, reproduction, or sales are strictly prohibited.
 ## System Specifications
 * **MCU:** Microchip ATmega32U4 (8-bit AVR @ 16 MHz, 5V)
 * **USB Interface:** USB Type-C Receptacle with USBLC6-2SC6 ESD protection (`U3`)
