@@ -1,5 +1,5 @@
 # MicroPad - Universal Dual-Encoder USB HID Controller
-# Copyright (C) 2026 Your Name / MicroPad Project
+# Copyright (C) 2026 UnlimitedMicro / MicroPad Project
 # This firmware is licensed under CC BY-NC-SA 4.0.
 # Commercial use, reproduction, or sales are strictly prohibited.
 
